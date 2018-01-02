@@ -13,7 +13,12 @@ RSpec.describe Geo do
     it 'returns centre point of a polygon' do
       expect(Geo.new.centre_point("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")).to eq([520599, 170388])
     end
+  describe '#bound_box' do
+    it 'returns bounding box geometry of a polygon' do
+      expect(Geo.new.bound_box("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")).to eq("520575 170371,520624 170371,520624 170405,520575 170405,520575 170371")
+    end
   end
-  end
-  end
+ end
+ end
+end
 end
