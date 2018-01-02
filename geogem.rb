@@ -44,10 +44,27 @@ class Geo
     end
     return xcoords.min + " " + ycoords.min + "," + xcoords.max + " " + ycoords.min + "," + xcoords.max + " " + ycoords.max + "," + xcoords.min + " " + ycoords.max + "," + xcoords.min + " " + ycoords.min
   end
+
+  def area(shape)
+    xcoords = []
+    ycoords = []
+    shape.split(",").each do |shape|
+      xcoords << shape.split(" ")[0].to_f
+      ycoords << shape.split(" ")[1].to_f
+    end
+   ycoords.each_with_index do |item,index|
+    puts ycoords[index + 1]
+  end
+  end
+
+
+
 end
+
 # puts Geo.new.distance(520500,170500,520700,170510)
 
 # puts Geo.new.centre_point("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")
-# shape = "520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388"
+shape = "520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388"
+Geo.new.area(shape)
 
 # puts bound_box(shape)
