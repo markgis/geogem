@@ -2,7 +2,7 @@
 ## Basic spatial functions - bit of a learning for myself
 
 
-Simple start to a spatial library in Ruby. Geos and GDAL are old and not maintained that much, also gdal although powerful isn't particularly nice to use.
+Simple start to a spatial library in Ruby to practice my coding and learn some maths.
 
 Wanted to make some simple spatial functions to calculate the distance between two points, find the area of a polygon etc. Just uses ruby and maths so far but might have to add in other libraries - proj4 most likely if I want to add in the ability to use multiple projection systems.  
 
