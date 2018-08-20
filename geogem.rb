@@ -53,7 +53,7 @@ class Geo
       ycoords << shape.split(" ")[1].to_f
     end
    ycoords.each_with_index do |item,index|
-    puts ycoords[index + 1]
+    # puts ycoords[index + 1]
   end
   end
 
