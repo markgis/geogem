@@ -32,7 +32,7 @@ class Generlizer
       else
         dist = -1
       end
-      points_distance.push(dist)
+      points_distance.push({point: point, dist_to_next: dist})
     end
     points_distance
   end
