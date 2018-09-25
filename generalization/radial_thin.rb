@@ -1,7 +1,7 @@
 include Math
 require "cmath"
 
-class Generlizer
+class RadialThin
 
   def distance(x, y, x0, y0)
     CMath.sqrt((x - x0)**2 + (y - y0)**2)
