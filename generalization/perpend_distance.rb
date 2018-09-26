@@ -43,7 +43,8 @@ class PerpendDistance
   end
 
   def perpend_thin(site,tolerance)
-    first_node_plain(site).join(',') + last_node_plain(site).join(',')
+    first_stage = first_node_plain(site).join(' ') + ',' + third_node(site).join(' ')
+    puts line_point_distance(first_stage, site.split(',')[1])
   end
 
   def line_point_distance(line, point)
