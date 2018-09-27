@@ -41,7 +41,7 @@ RSpec.describe RadialThin do
 
   describe 'node_thin' do
     it 'removes nodes that are closer then tolerance from live example' do
-      expect(RadialThin.new.radial_thin(site, 0.7)).to eq(expect_output)
+      expect(RadialThin.new.radial_thin(site, 0.1)).to eq(expect_output)
     end
   end
   end

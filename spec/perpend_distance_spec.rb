@@ -41,15 +41,23 @@ RSpec.describe PerpendDistance do
     end
   end
 
-  describe 'third_node' do
+  describe 'n_node' do
     it 'returns third node from a line' do
-      expect(PerpendDistance.new.third_node(site)).to eq(['378211.59999999962747097','390006.40000000037252903'])
+      expect(PerpendDistance.new.n_node(site, 2)).to eq(['378211.59999999962747097','390006.40000000037252903'])
     end
   end
 
   describe 'perpend_thin' do
-    it 'returns polygon with thinned nodes' do
-      expect(PerpendDistance.new.perpend_thin(site,1)).to eq('378211.59999999962747097 390006.40000000037252903')
+    it 'returns third node from a line' do
+      actual = PerpendDistance.new.perpend_thin(site, 0.03)
+      puts actual
+      expect(actual).to eq(['378211.59999999962747097','390006.40000000037252903'])
     end
   end
+
+  # describe 'line_distance' do
+  #   it 'returns polygon with thinned nodes' do
+  #     expect(PerpendDistance.new.line_distance(site)).to eq('378211.59999999962747097 390006.40000000037252903')
+  #   end
+  # end
 end

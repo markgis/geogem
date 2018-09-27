@@ -38,13 +38,35 @@ class PerpendDistance
     point.split.last.to_f
   end
 
-  def third_node(site)
-    site.split(',', 4)[2].strip!.split(' ')
+  def n_node(site, n)
+    site.split(',')[n].split(' ')
   end
 
-  def perpend_thin(site,tolerance)
-    first_stage = first_node_plain(site).join(' ') + ',' + third_node(site).join(' ')
-    puts line_point_distance(first_stage, site.split(',')[1])
+  def line_distance(site)
+    line_distance = []
+    nodes = site.split(',')
+    nodes.each_with_index do |node, index|
+      if (index + 2) < nodes.length
+        line = n_node(site, index).join(' ') + ',' + n_node(site, index + 2).join(' ')
+        dist = line_point_distance(line, nodes[index + 1])
+      else
+        dist = -1
+      end
+      line_distance.push({node: node, dist_to_line: dist})
+    end
+    line_distance
+  end
+
+  def perpend_thin(site, tolerance)
+    distance = line_distance(site)
+    distance.each_with_index do |x, index|
+      if x.values[1] <= tolerance && x.values[1] != -1
+        distance.delete_at(index)
+      end
+    end
+    distance.map do |x|
+      "#{x[:node].split()[0]} #{x[:node].split()[1]}"
+    end.join(',')
   end
 
   def line_point_distance(line, point)
