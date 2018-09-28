@@ -10,12 +10,14 @@ Only works in British national grid.
 
 So far no conversion from or to geometries, the fucntions take in coordinates as strings using the WKT format - remove the words and brackets i.e. "x y,x y,x y" 
 
-There only four functions so far;
+There are a number of functions and slowly movig them into different sections. Most have specs but arent really working as proper objects yet.
 
 1. distance - the distance between two points - using Euclidean distance.
 2. point_buffer- creates a circle - takes in a point, the radius and the distance between each node - smoothness of circle - must be >0 smaller number means a smoother cicrle but more nodes returned
 3. centre_point - feed in polygon and returns its centre point
 4. bound_box- feed in site and this will return bounding box of the polygon
+5. Generalization - both radial thinning and perpendicular distance- might work on other algorithms as well
+
 
 
 To do:
@@ -25,3 +27,5 @@ To do:
 4. buffer polygons
 5. intersection of multiple polygons
 6. clipping of polygons
+7. Fix generalization algorithms both work but some strange behaviour
+8. Validation - self intertsections, syntax errors of WKT, UK bounds check, etc
