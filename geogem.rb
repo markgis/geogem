@@ -1,7 +1,18 @@
 include Math
-require "cmath"
 
-class Geo
+class Polygon
+  attr_reader :nodes
+
+  def initialize(wkt)
+    @nodes = wkt.split(', ').map { |xy| Point.new(xy) }
+  end
+
+  def bbox()
+    x_max = nodes.max_by(&:x).x
+    y_max = nodes.max_by(&:y).y
+    x_min = nodes.min_by(&:x).x
+    y_min = nodes.min_by(&:y).y
+    "#{x_min} #{y_min}, #{x_max} #{y_max}"
 
   def distance(x,y,x0,y0)
     return CMath.sqrt((x-x0)**2 + (y-y0)**2)
