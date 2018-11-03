@@ -13,6 +13,17 @@ class Polygon
     x_min = nodes.min_by(&:x).x
     y_min = nodes.min_by(&:y).y
     "#{x_min} #{y_min}, #{x_max} #{y_max}"
+  end
+
+  def centre_point()
+    x_max = nodes.max_by(&:x).x
+    y_max = nodes.max_by(&:y).y
+    x_min = nodes.min_by(&:x).x
+    y_min = nodes.min_by(&:y).y
+    x_coord = (x_max + x_min) / 2.0
+    y_coord = (y_max + y_min) / 2.0
+    "#{x_coord} #{y_coord}"
+  end
 
   def distance(x,y,x0,y0)
     return CMath.sqrt((x-x0)**2 + (y-y0)**2)
@@ -44,16 +55,6 @@ class Polygon
     xcen= xcoords.min + (xcoords.max - xcoords.min)/2
     ycen = ycoords.min + (ycoords.max - ycoords.min)/2
       return xcen,ycen
-  end
-
-  def bound_box(shape)
-    xcoords = []
-    ycoords = []
-    shape.split(",").each do |shape|
-      xcoords << shape.split(" ")[0]
-      ycoords << shape.split(" ")[1]
-    end
-    return xcoords.min + " " + ycoords.min + "," + xcoords.max + " " + ycoords.min + "," + xcoords.max + " " + ycoords.max + "," + xcoords.min + " " + ycoords.max + "," + xcoords.min + " " + ycoords.min
   end
 
   def area(shape)
