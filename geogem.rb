@@ -25,6 +25,15 @@ class Polygon
     "#{x_coord} #{y_coord}"
   end
 
+  def area()
+    offset = nodes.slice(1, nodes.length)
+    offset << Point.new("0 0")
+    zipped = offset.zip(nodes)
+    multiplied = zipped.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
+    total = results.sum.abs
+    total / 2.0
+  end
+
   def distance(x,y,x0,y0)
     return CMath.sqrt((x-x0)**2 + (y-y0)**2)
   end
