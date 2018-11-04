@@ -66,4 +66,11 @@ RSpec.describe Polygon do
       .to eq("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))")
     end
   end
+
+  describe '#intersects?' do
+    it 'returns true if 2 polygons intersect' do 
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5")))
+      .to eq(true)
+    end
+  end
 end

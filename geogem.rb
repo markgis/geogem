@@ -9,11 +9,11 @@ class Polygon
                 .split(', ').map { |xy| Point.new(xy) }
   end
 
-  def to_wkt()
+  def to_wkt
     "POLYGON((" + nodes.map { |p| "#{p.x} #{p.y}" }.join(', ') + "))"
   end
 
-  def bbox()
+  def bbox
     x_max = nodes.max_by(&:x).x
     y_max = nodes.max_by(&:y).y
     x_min = nodes.min_by(&:x).x
@@ -21,7 +21,7 @@ class Polygon
     "#{x_min} #{y_min}, #{x_max} #{y_max}"
   end
 
-  def centre_point()
+  def centre_point
     x_max = nodes.max_by(&:x).x
     y_max = nodes.max_by(&:y).y
     x_min = nodes.min_by(&:x).x
@@ -31,7 +31,7 @@ class Polygon
     "#{x_coord} #{y_coord}"
   end
 
-  def area()
+  def area
     offset = nodes.slice(1, nodes.length)
     offset << Point.new("0 0")
     zipped = offset.zip(nodes)
@@ -40,12 +40,16 @@ class Polygon
     total / 2.0
   end
 
-  def self_intersects?()
+  def self_intersects?
     line_s = nodes.slice(0, nodes.length - 1)
     line_e = nodes.slice(1, nodes.length)
     lines = line_s.zip(line_e)
     all_lines = lines.combination(2)
     all_lines.map { |l1, l2| intersect?(l1, l2) }.any? 
+  end
+
+  def intersects?(poly)
+    bbox_intersect?(self.bbox, poly.bbox)
   end
 
   private
@@ -65,6 +69,13 @@ class Polygon
           ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)).to_f
     return false unless (t > 0 && t < 1)
     true
+  end
+
+  def bbox_intersect?(bbox1, bbox2)
+    bb1_min, bb1_max = bbox1.split(' ').map { |p| Point.new(p) }
+    bb2_min, bb2_max = bbox2.split(' ').map { |p| Point.new(p) }
+    (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) && 
+      (bb1_max.y >= bb2_min.y && bb2_max.y >= bb2_max.y)
   end
 end
 
