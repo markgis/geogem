@@ -3,10 +3,12 @@ require 'pry-byebug'
 
 class Polygon
   attr_reader :nodes
+  attr_reader :lines
 
   def initialize(wkt)
     @nodes = wkt.downcase.delete('polygon()')
                 .split(', ').map { |xy| Point.new(xy) }
+    @lines = nodes.slice(0, nodes.length-1).zip(nodes.slice(1,nodes.length))
   end
 
   def to_wkt
@@ -32,20 +34,14 @@ class Polygon
   end
 
   def area
-    offset = nodes.slice(1, nodes.length)
-    offset << Point.new("0 0")
-    zipped = offset.zip(nodes)
-    multiplied = zipped.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
+    multiplied = lines.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
     total = multiplied.sum.abs
     total / 2.0
   end
 
   def self_intersects?
-    line_s = nodes.slice(0, nodes.length - 1)
-    line_e = nodes.slice(1, nodes.length)
-    lines = line_s.zip(line_e)
-    all_lines = lines.combination(2)
-    all_lines.map { |l1, l2| intersect?(l1, l2) }.any? 
+    line_pairs = lines.combination(2)
+    line_pairs.map { |l1, l2| intersect?(l1, l2) }.any? 
   end
 
   def intersects?(poly)
