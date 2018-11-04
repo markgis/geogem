@@ -45,7 +45,9 @@ class Polygon
   end
 
   def intersects?(poly)
-    bbox_intersect?(self.bbox, poly.bbox)
+    return true unless !bbox_intersect?(self.bbox, poly.bbox)
+    return true unless !poly.nodes.each { |n| self.point_in_poly?(n) }.any?
+    self.nodes.each { |n| poly.point_in_poly?(n) }.any?
   end
 
   private
