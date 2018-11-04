@@ -77,6 +77,17 @@ class Polygon
     (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) && 
       (bb1_max.y >= bb2_min.y && bb2_max.y >= bb2_max.y)
   end
+
+  def point_in_poly?(test_point)
+    #binding.pry
+    test_line = [test_point, Point.new("700000 #{test_point.y}")]
+    line_s = nodes.slice(0, nodes.length - 1)
+    line_e = nodes.slice(1, nodes.length)
+    lines = line_s.zip(line_e)
+    intersections = lines.map { |l| intersect?(l, test_line) }
+    intersection_cnt = intersections.count(true)
+    intersection_cnt % 2 == 0
+  end
 end
 
 class Point
@@ -110,4 +121,4 @@ class Point
 end
 
 
-Polygon.new("0 0, 2 2, 2 0, 0 2, 0 0").self_intersects?
+#Polygon.new("0 0, 2 2, 2 0, 0 2, 0 0").self_intersects?

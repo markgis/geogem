@@ -73,4 +73,11 @@ RSpec.describe Polygon do
       .to eq(true)
     end
   end
+
+  describe '#point_in_poly?' do 
+    it 'returns true if a point lies inside a polygon' do
+      expect(Polygon.new("0 0, 100 0, 100 100, 0 100, 0 0").send(:point_in_poly?, Point.new("50 50")))
+      .to eq(true)
+    end
+  end
 end
