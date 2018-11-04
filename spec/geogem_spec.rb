@@ -14,6 +14,13 @@ RSpec.describe Point do
       .to eq("500100.0 150000.0, 500086.60254037846 150050.0, 500050.0 150086.60254037843, 500000.0 150100.0, 499950.0 150086.60254037843, 499913.39745962154 150050.0, 499900.0 150000.0, 499913.39745962154 149950.0, 499950.0 149913.39745962157, 500000.0 149900.0, 500050.0 149913.39745962157, 500086.60254037846 149950.0, 500100.0 150000.0")
     end
   end
+
+  describe ' #to_wkt' do 
+    it 'returns the point in Well Known Text format' do 
+      expect(Point.new("200000 300000").to_wkt)
+      .to eq("POINT(200000 300000)")
+    end
+  end
 end
 
 RSpec.describe Polygon do 
@@ -50,6 +57,13 @@ RSpec.describe Polygon do
     it 'returns true if a polygon intersects with it\'s self' do 
       expect(Polygon.new("0 0, 2 2, 0 2, 2 0, 0 0").self_intersects?)
       .to eq(true)
+    end
+  end
+
+  describe '#to_wkt(polygon)' do
+    it 'returns the wkt of a polygon' do
+      expect(Polygon.new("Polygon((0 0, 10 0, 10 10, 0 10, 0 0))").to_wkt)
+      .to eq("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))")
     end
   end
 end

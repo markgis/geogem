@@ -1,6 +1,6 @@
 include Math
 
-class Polygon
+class PolygonThin
   attr_reader :nodes
   def initialize(wkt)
     @nodes = wkt.split(', ').map { |xy| Point.new(xy) }

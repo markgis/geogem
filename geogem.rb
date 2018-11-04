@@ -5,7 +5,12 @@ class Polygon
   attr_reader :nodes
 
   def initialize(wkt)
-    @nodes = wkt.split(', ').map { |xy| Point.new(xy) }
+    @nodes = wkt.downcase.delete('polygon()')
+                .split(', ').map { |xy| Point.new(xy) }
+  end
+
+  def to_wkt()
+    "POLYGON((" + nodes.map { |p| "#{p.x} #{p.y}" }.join(', ') + "))"
   end
 
   def bbox()
@@ -70,6 +75,10 @@ class Point
   def initialize(xy)
     @x = xy.split(' ').first.to_i
     @y = xy.split(' ').last.to_i
+  end
+
+  def to_wkt()
+    "POINT(#{x} #{y})"
   end
 
   def distance(p2)
