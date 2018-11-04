@@ -33,59 +33,30 @@ class Polygon
     total = results.sum.abs
     total / 2.0
   end
-
-  def distance(x,y,x0,y0)
-    return CMath.sqrt((x-x0)**2 + (y-y0)**2)
-  end
-
-  # puts distance(520500,170500,520700,170510)
-
-  def point_buff(sitex,sitey,r,steps)
-    wkt = ""
-    angle = 0
-    while angle <= 360 do
-      x= sitex + r* Math.cos(angle * Math::PI / 180)
-      y= sitey + r* Math.sin(angle * Math::PI / 180)
-      wkt << x.to_s + " " + y.to_s + ","
-      angle += steps
-    end
-    return wkt
-  end
-
-  # puts point_buff(520500,170500,200,10)
-
-  def centre_point(shape)
-    xcoords = []
-    ycoords = []
-    shape.split(",").each do |shape|
-      xcoords << shape.split(" ")[0].to_i
-      ycoords << shape.split(" ")[1].to_i
-      end
-    xcen= xcoords.min + (xcoords.max - xcoords.min)/2
-    ycen = ycoords.min + (ycoords.max - ycoords.min)/2
-      return xcen,ycen
-  end
-
-  def area(shape)
-    xcoords = []
-    ycoords = []
-    shape.split(",").each do |shape|
-      xcoords << shape.split(" ")[0].to_f
-      ycoords << shape.split(" ")[1].to_f
-    end
-   ycoords.each_with_index do |item,index|
-    # puts ycoords[index + 1]
-  end
-  end
-
-
-
 end
 
-# puts Geo.new.distance(520500,170500,520700,170510)
+class Point
+  attr_reader :x
+  attr_reader :y
 
-# puts Geo.new.centre_point("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")
-shape = "520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388"
-Geo.new.area(shape)
+  def initialize(xy)
+    @x = xy.split(' ').first.to_i
+    @y = xy.split(' ').last.to_i
+  end
 
-# puts bound_box(shape)
+  def distance(p2)
+    (((x - p2.x) ** 2 + (y - p2.y) ** 2) ** 0.5).abs
+  end
+
+  def point_buff(r,steps)
+    wkt = []
+    angle = 0
+    while angle <= 360 do
+      new_x = x + r * Math.cos(angle * Math::PI / 180)
+      new_y = y + r * Math.sin(angle * Math::PI / 180)
+      wkt << "#{new_x.to_s} #{new_y.to_s}"
+      angle += (360 / steps)
+    end
+    wkt.join(', ')
+  end
+end
