@@ -1,4 +1,5 @@
 include Math
+require 'pry-byebug'
 
 class Polygon
   attr_reader :nodes
@@ -33,6 +34,33 @@ class Polygon
     total = multiplied.sum.abs
     total / 2.0
   end
+
+  def self_intersects?()
+    line_s = nodes.slice(0, nodes.length - 1)
+    line_e = nodes.slice(1, nodes.length)
+    lines = line_s.zip(line_e)
+    all_lines = lines.combination(2)
+    all_lines.map { |l1, l2| intersect?(l1, l2) }.any? 
+  end
+
+  private
+
+  def intersect?(line_1, line_2)
+    #binding.pry
+    x1, y1 = line_1[0].x, line_1[0].y
+    x2, y2 = line_1[1].x, line_1[1].y
+    x3, y3 = line_2[0].x, line_2[0].y
+    x4, y4 = line_2[1].x, line_2[1].y
+    u_bottom =  ((x4 - x3) * (y2 - y1) - (y4 - y3) * (x2 - x1))
+    return false unless u_bottom != 0
+    u_top = ((y4 - y3) * (x1 - x3) - (x4 - x3) * (y1 - y3))
+    u = u_top.to_f / u_bottom.to_f
+    return false unless (u > 0 && u < 1)
+    t =  -((y4 - y3) * (x1 - x3) - (x4 - x3) * (y1 - y3)) /
+          ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)).to_f
+    return false unless (t > 0 && t < 1)
+    true
+  end
 end
 
 class Point
@@ -60,3 +88,6 @@ class Point
     wkt.join(', ')
   end
 end
+
+
+Polygon.new("0 0, 2 2, 2 0, 0 2, 0 0").self_intersects?
