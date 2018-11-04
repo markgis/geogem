@@ -30,7 +30,7 @@ class Polygon
     offset << Point.new("0 0")
     zipped = offset.zip(nodes)
     multiplied = zipped.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
-    total = results.sum.abs
+    total = multiplied.sum.abs
     total / 2.0
   end
 end

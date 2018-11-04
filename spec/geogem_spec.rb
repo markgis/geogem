@@ -30,4 +30,11 @@ RSpec.describe Polygon do
       .to eq("520575 170371, 520624 170405")
     end
   end
+
+  describe '#area ' do
+    it 'returns the area of a polyon' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").area)
+      .to eq(100)
+    end
+  end
 end
