@@ -1,24 +1,83 @@
 require_relative 'spec_helper'
 
-RSpec.describe Geo do
-  describe '#distance' do
+RSpec.describe Point do
+  describe ' #distance' do
     it 'returns distance from two points' do
-      expect(Geo.new.distance(400000,200000,400100,200000)).to eq(100)
-    end
-  describe '#point_buff' do
-    it 'returns circle geometry buffering point' do
-      expect(Geo.new.point_buff(400000,200000,50,10)).to eq("400050.0 200000.0,400049.2403876506 200008.68240888335,400046.9846310393 200017.1010071663,400043.30127018923 200025.0,400038.30222215597 200032.13938048432,400032.13938048435 200038.30222215594,400025.0 200043.30127018923,400017.10100716626 200046.9846310393,400008.68240888335 200049.2403876506,400000.0 200050.0,399991.31759111665 200049.2403876506,399982.89899283374 200046.9846310393,399975.0 200043.30127018923,399967.86061951565 200038.30222215594,399961.69777784403 200032.13938048432,399956.69872981077 200025.0,399953.0153689607 200017.1010071663,399950.7596123494 200008.68240888335,399950.0 200000.0,399950.7596123494 199991.31759111665,399953.0153689607 199982.8989928337,399956.69872981077 199975.0,399961.69777784403 199967.86061951568,399967.86061951565 199961.69777784406,399975.0 199956.69872981077,399982.89899283374 199953.0153689607,399991.31759111665 199950.7596123494,400000.0 199950.0,400008.68240888335 199950.7596123494,400017.10100716626 199953.0153689607,400025.0 199956.69872981077,400032.13938048435 199961.69777784406,400038.30222215597 199967.86061951568,400043.30127018923 199975.0,400046.9846310393 199982.8989928337,400049.2403876506 199991.31759111665,400050.0 200000.0,")
-    end
-  describe '#centre_point' do
-    it 'returns centre point of a polygon' do
-      expect(Geo.new.centre_point("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")).to eq([520599, 170388])
-    end
-  describe '#bound_box' do
-    it 'returns bounding box geometry of a polygon' do
-      expect(Geo.new.bound_box("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388")).to eq("520575 170371,520624 170371,520624 170405,520575 170405,520575 170371")
+      expect(Point.new("400000 200000").distance(Point.new("400100 200000")))
+      .to eq(100)
     end
   end
- end
- end
+
+  describe ' #point_buff' do
+    it 'returns circle geometry buffering point' do
+      expect(Point.new("500000 150000").point_buff(100,12))
+      .to eq("500100.0 150000.0, 500086.60254037846 150050.0, 500050.0 150086.60254037843, 500000.0 150100.0, 499950.0 150086.60254037843, 499913.39745962154 150050.0, 499900.0 150000.0, 499913.39745962154 149950.0, 499950.0 149913.39745962157, 500000.0 149900.0, 500050.0 149913.39745962157, 500086.60254037846 149950.0, 500100.0 150000.0")
+    end
+  end
+
+  describe ' #to_wkt' do 
+    it 'returns the point in Well Known Text format' do 
+      expect(Point.new("200000 300000").to_wkt)
+      .to eq("POINT(200000 300000)")
+    end
+  end
 end
+
+RSpec.describe Polygon do 
+  describe ' #centre_point' do
+    it 'returns centre point of a polygon' do
+      expect(Polygon.new("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388").centre_point)
+      .to eq("520599.5 170388.0")
+    end
+  end
+
+  describe ' #bbox' do
+    it 'returns bounding box geometry of a polygon' do
+      expect(Polygon.new("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388").bbox)
+      .to eq("520575 170371, 520624 170405")
+    end
+  end
+
+  describe ' #area' do
+    it 'returns the area of a polyon' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").area)
+      .to eq(100)
+    end
+  end
+
+  describe ' #intersect?' do
+    it 'returns true if 2 line segments intersect' do
+      my_obj = Polygon.new("0 0")
+      expect(my_obj.send(:intersect?, [Point.new("0 0"), Point.new("2 2")], [Point.new("2 0"), Point.new("0 2")]))
+      .to eq (true)
+    end
+  end
+
+  describe ' #self_intersects?' do
+    it 'returns true if a polygon intersects with it\'s self' do 
+      expect(Polygon.new("0 0, 2 2, 0 2, 2 0, 0 0").self_intersects?)
+      .to eq(true)
+    end
+  end
+
+  describe '#to_wkt(polygon)' do
+    it 'returns the wkt of a polygon' do
+      expect(Polygon.new("Polygon((0 0, 10 0, 10 10, 0 10, 0 0))").to_wkt)
+      .to eq("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))")
+    end
+  end
+
+  describe '#intersects?' do
+    it 'returns true if 2 polygons intersect' do 
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5")))
+      .to eq(true)
+    end
+  end
+
+  describe '#point_in_poly?' do 
+    it 'returns true if a point lies inside a polygon' do
+      expect(Polygon.new("0 0, 100 0, 100 100, 0 100, 0 0").send(:point_in_poly?, Point.new("50 50")))
+      .to eq(true)
+    end
+  end
 end
