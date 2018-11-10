@@ -45,9 +45,20 @@ class Polygon
   end
 
   def intersects?(poly)
-    return true unless !bbox_intersect?(self.bbox, poly.bbox)
-    return true unless !poly.nodes.each { |n| self.point_in_poly?(n) }.any?
-    self.nodes.each { |n| poly.point_in_poly?(n) }.any?
+    #binding.pry
+    return false unless bbox_intersect?(self.bbox, poly.bbox)
+    return true unless !poly.nodes.map { |n| point_in_poly?(n) }.any?
+    nodes.map { |n| poly.point_in_poly?(n) }.any?
+  end
+
+  protected 
+
+  def point_in_poly?(test_point)
+    #binding.pry
+    test_line = [test_point, Point.new("700000 #{test_point.y}")]
+    intersections = lines.map { |l| intersect?(l, test_line) }
+    intersection_cnt = intersections.count(true)
+    intersection_cnt % 2 == 1
   end
 
   private
@@ -58,33 +69,22 @@ class Polygon
     x2, y2 = line_1[1].x, line_1[1].y
     x3, y3 = line_2[0].x, line_2[0].y
     x4, y4 = line_2[1].x, line_2[1].y
-    u_bottom =  ((x4 - x3) * (y2 - y1) - (y4 - y3) * (x2 - x1))
+    u_bottom =  ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
     return false unless u_bottom != 0
-    u_top = ((y4 - y3) * (x1 - x3) - (x4 - x3) * (y1 - y3))
-    u = u_top.to_f / u_bottom.to_f
+    u_top = ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3))
+    u = -(u_top.to_f / u_bottom.to_f)
     return false unless (u > 0 && u < 1)
-    t =  -((y4 - y3) * (x1 - x3) - (x4 - x3) * (y1 - y3)) /
-          ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)).to_f
+    t =  ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) /
+         ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)).to_f
     return false unless (t > 0 && t < 1)
     true
   end
 
   def bbox_intersect?(bbox1, bbox2)
-    bb1_min, bb1_max = bbox1.split(' ').map { |p| Point.new(p) }
-    bb2_min, bb2_max = bbox2.split(' ').map { |p| Point.new(p) }
+    bb1_min, bb1_max = bbox1.split(', ').map { |p| Point.new(p) }
+    bb2_min, bb2_max = bbox2.split(', ').map { |p| Point.new(p) }
     (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) && 
       (bb1_max.y >= bb2_min.y && bb2_max.y >= bb2_max.y)
-  end
-
-  def point_in_poly?(test_point)
-    #binding.pry
-    test_line = [test_point, Point.new("700000 #{test_point.y}")]
-    line_s = nodes.slice(0, nodes.length - 1)
-    line_e = nodes.slice(1, nodes.length)
-    lines = line_s.zip(line_e)
-    intersections = lines.map { |l| intersect?(l, test_line) }
-    intersection_cnt = intersections.count(true)
-    intersection_cnt % 2 == 0
   end
 end
 
@@ -119,4 +119,4 @@ class Point
 end
 
 
-#Polygon.new("0 0, 2 2, 2 0, 0 2, 0 0").self_intersects?
+Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5"))

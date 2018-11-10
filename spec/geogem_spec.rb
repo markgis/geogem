@@ -49,7 +49,15 @@ RSpec.describe Polygon do
     it 'returns true if 2 line segments intersect' do
       my_obj = Polygon.new("0 0")
       expect(my_obj.send(:intersect?, [Point.new("0 0"), Point.new("2 2")], [Point.new("2 0"), Point.new("0 2")]))
-      .to eq (true)
+      .to eq(true)
+    end
+  end
+
+  describe '#intersect?' do
+    it 'returns false when 2 line segments don\'t intersect' do
+      my_obj = Polygon.new("0 0")
+      expect(my_obj.send(:intersect?, [Point.new("10 0"), Point.new("0 10")], [Point.new("0 5"), Point.new("0 4")]))
+      .to eq(false)
     end
   end
 
@@ -57,6 +65,13 @@ RSpec.describe Polygon do
     it 'returns true if a polygon intersects with it\'s self' do 
       expect(Polygon.new("0 0, 2 2, 0 2, 2 0, 0 0").self_intersects?)
       .to eq(true)
+    end
+  end
+
+  describe 'self_intersects?' do
+    it 'returns false when a polygon does not cross itself' do
+      expect(Polygon.new("0 0, 0 2, 2 2, 2 0, 0 0").self_intersects?)
+      .to eq(false)
     end
   end
 
@@ -71,6 +86,13 @@ RSpec.describe Polygon do
     it 'returns true if 2 polygons intersect' do 
       expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5")))
       .to eq(true)
+    end
+  end
+
+  describe 'intersects?' do 
+    it 'returns false when 2 polygon do not intersect' do
+      expect(Polygon.new("0 0, 0 10, 5 5, 10 10, 10 0, 0 0").intersects?(Polygon.new("0 11, 5 6, 10 11, 10 20, 0 20, 0 11")))
+      .to eq(false)
     end
   end
 
