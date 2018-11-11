@@ -66,7 +66,10 @@ class Polygon
   end
 
   def dissolve(poly)
-    "0 0, 10 0, 10 5, 20 5, 20 20, 5 20, 5 10, 0 5, 0 0"
+    return false unless intersects?(poly)
+    new_poly = ["#{nodes.first.x} #{nodes.first.y}"]
+    finished_poly = geom_switch(lines, poly.lines, new_poly)
+    new_poly.join(', ')
   end
 
   protected 
@@ -80,6 +83,20 @@ class Polygon
   end
 
   private
+
+  def geom_switch(lines1, lines2, new_poly)
+    lines1.each_with_index do |l1, in1|
+      lines2.each_with_index do |l2, in2|
+        if intersect?(l1,l2)
+          new_poly << intersection(l1,l2)
+          rest_lines2 = lines2.slice(in2, lines2.length)
+          rest_lines1 = lines1.slice(in1+1, lines1.length)
+          return geom_switch(rest_lines2, rest_lines1, new_poly)
+        end
+      end
+      new_poly << "#{l1.last.x} #{l1.last.y}"
+    end
+  end
 
   def intersect?(line_1, line_2)
     #binding.pry
