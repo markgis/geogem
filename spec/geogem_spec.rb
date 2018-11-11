@@ -102,4 +102,28 @@ RSpec.describe Polygon do
       .to eq(true)
     end
   end
+
+  describe 'intersection' do
+    it 'returns the intersection point of 2 lines' do
+      my_obj = Polygon.new("0 50, 100 50, 50 0, 50 100, 0 50")
+      expect(my_obj.intersection(my_obj.lines[0],my_obj.lines[2]))
+      .to eq("50.0 50.0")
+    end
+  end
+
+  describe 'intersection' do
+    it 'returns false if 2 lines don\'t intersect' do
+      my_obj = Polygon.new("0 0, 0 100, 100 50, 200, 50, 0 0")
+      expect(my_obj.intersection(my_obj.lines[0],my_obj.lines[2]))
+      .to eq(false)
+    end
+  end
+
+  describe 'intersection' do
+    it 'returns the intersection point of 2 lines' do
+      my_obj = Polygon.new("0 0, 20 20, 0 20, 20 0, 0 0")
+      expect(my_obj.intersection(my_obj.lines[0],my_obj.lines[2]))
+      .to eq("10.0 10.0")
+    end
+  end
 end

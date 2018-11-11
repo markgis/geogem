@@ -51,6 +51,20 @@ class Polygon
     nodes.map { |n| poly.point_in_poly?(n) }.any?
   end
 
+  def intersection(line_1, line_2)
+    return false unless intersect?(line_1,line_2)
+    x1, y1 = line_1[0].x, line_1[0].y
+    x2, y2 = line_1[1].x, line_1[1].y
+    x3, y3 = line_2[0].x, line_2[0].y
+    x4, y4 = line_2[1].x, line_2[1].y
+    u_bottom =  ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+    u_top = ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3))
+    u = -(u_top.to_f / u_bottom.to_f)
+    px = x3 + u * (x4 - x3)
+    py = y3 + u * (y4 - y3)
+    "#{px} #{py}"
+  end
+
   protected 
 
   def point_in_poly?(test_point)
