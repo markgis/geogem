@@ -140,4 +140,32 @@ RSpec.describe Polygon do
       .to eq (false)
     end
   end
+
+  describe 'dissolve' do
+    it 'returns the combination of 2 polygons when the start point is inside another polygon' do
+      expect(Polygon.new("5 5, 20 5, 20 20, 5 20, 5 5").dissolve(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0")))
+      .to eq("0 0, 10 0, 10.0 5.0, 20 5, 20 20, 5 20, 5.0 10.0, 0 10, 0 0")
+    end
+  end
+
+  describe 'dissolve' do
+    it 'returns the combination of 2 polygons when the lines are in opposite directions' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").dissolve(Polygon.new("5 5, 5 20, 20 20, 20 5, 5 5")))
+      .to eq("0 0, 10 0, 10.0 5.0, 20 5, 20 20, 5 20, 5.0 10.0, 0 10, 0 0")
+    end
+  end
+
+  describe 'clockwise?' do
+    it 'returns true if a polygon\'s nodes are in a clockwise orientation' do
+      expect(Polygon.new("0 0, 0 10, 10 10, 10 0, 10").send(:clockwise?))
+      .to eq(true)
+    end
+  end
+
+  describe 'clockwise?' do
+    it 'returns false if a polygon\'s nodes are in a counter clockwise formation' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").send(:clockwise?))
+      .to eq(false)
+    end
+  end
 end

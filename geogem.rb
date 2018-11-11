@@ -82,6 +82,12 @@ class Polygon
     intersection_cnt % 2 == 1
   end
 
+  def clockwise?
+    multiplied = lines.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
+    total = multiplied.sum
+    return total < 0
+  end
+
   private
 
   def geom_switch(lines1, lines2, new_poly)
