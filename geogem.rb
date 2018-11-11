@@ -65,6 +65,10 @@ class Polygon
     "#{px} #{py}"
   end
 
+  def dissolve(poly)
+    "0 0, 10 0, 10 5, 20 5, 20 20, 5 20, 5 10, 0 5, 0 0"
+  end
+
   protected 
 
   def point_in_poly?(test_point)

@@ -126,4 +126,11 @@ RSpec.describe Polygon do
       .to eq("10.0 10.0")
     end
   end
+
+  describe 'dissolve' do
+    it 'returns the combination of 2 polygons' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").dissolve(Polygon.new("5 5, 20 5, 20 20, 5 20, 5 5")))
+      .to eq("0 0, 10 0, 10 5, 20 5, 20 20, 5 20, 5 10, 0 5, 0 0")
+    end
+  end
 end
