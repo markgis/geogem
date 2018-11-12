@@ -31,3 +31,17 @@ To do:
 4. clipping of polygons
 5. Fix generalization algorithms (radil and perpendicular distance) both work but some strange behaviour 
 6. Validation - syntax errors of WKT, UK bounds check, etc
+
+## Function explination - because the code is getting very dirty!
+### to_wkt
+Returns the polygon's nodes in Well Known Text format i.e. "x y, x y, x y".
+Nice and simple!
+
+### bbox
+Returns 2 points in the form "x_min y_min, x_max y_max". 
+
+### dissolve
+Returns outline of 2 overlapping polyons.
+It first checks the 2 polygons are overlapping by calling the intersects? method. It then retrives the minimum of the 2 bounding boxes, it uses this point to calculate which point is closest to that point and therefore likey to be in the resultant outside edge. The lines of both polygons are then re-ordered to start at the point closest to the minium and if the polygons are in anti-clockwise they are reversed to be clockwise. The 2 lines are then passed to a switch method, which decides which line point to use next.
+
+With minor sweaks such making 1 polygon clockwise and the other anti-clockwise this can be used to do clipping instead of joining or an inner join where only the over lapping parts are returned (although in it's current state that would only work for polygons where they had a single area of overlap)
