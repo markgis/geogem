@@ -67,8 +67,10 @@ class Polygon
 
   def dissolve(poly)
     return false unless intersects?(poly)
-    new_poly = ["#{nodes.first.x} #{nodes.first.y}"]
-    finished_poly = geom_switch(lines, poly.lines, new_poly)
+    n_lines = clockwise? ? lines : lines.map(&:reverse).reverse
+    n_lines2 = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+    new_poly = ["#{n_lines.first.first.x} #{n_lines.first.first.y}"]
+    finished_poly = geom_switch(n_lines, n_lines2, new_poly)
     new_poly.join(', ')
   end
 
@@ -160,4 +162,4 @@ class Point
 end
 
 
-Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5"))
+#Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5"))
