@@ -66,9 +66,23 @@ class Polygon
   end
 
   def dissolve(poly)
+    #binding.pry
     return false unless intersects?(poly)
-    n_lines = clockwise? ? lines : lines.map(&:reverse).reverse
-    n_lines2 = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+    p1_x_min = nodes.min_by(&:x).x
+    p1_y_min = nodes.min_by(&:y).y
+    p2_x_min = poly.nodes.min_by(&:x).x
+    p2_y_min = poly.nodes.min_by(&:y).y
+    x_min = [p1_x_min, p2_x_min].min
+    y_min = [p1_y_min, p2_y_min].min
+    p1_dis = nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.min
+    p2_dis = poly.nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.min
+    if p1_dis <= p2_dis
+      n_lines = clockwise? ? lines : lines.map(&:reverse).reverse
+      n_lines2 = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+    else
+      n_lines2 = clockwise? ? lines : lines.map(&:reverse).reverse
+      n_lines = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+    end
     new_poly = ["#{n_lines.first.first.x} #{n_lines.first.first.y}"]
     finished_poly = geom_switch(n_lines, n_lines2, new_poly)
     new_poly.join(', ')
