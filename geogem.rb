@@ -74,14 +74,17 @@ class Polygon
     p2_y_min = poly.nodes.min_by(&:y).y
     x_min = [p1_x_min, p2_x_min].min
     y_min = [p1_y_min, p2_y_min].min
-    p1_dis = nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.min
-    p2_dis = poly.nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.min
+    p1_dis, p1_min_index = nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.each_with_index.min
+    p2_dis, p2_min_index= poly.nodes.map { |p| p.distance(Point.new("#{x_min} #{y_min}")) }.each_with_index.min
+    puts p1_min_index
+    p1_lines = lines.slice(p1_min_index, lines.length) + lines.slice(0, p1_min_index)
+    p2_lines = poly.lines.slice(p2_min_index, poly.lines.length) + poly.lines.slice(0, p2_min_index)
     if p1_dis <= p2_dis
-      n_lines = clockwise? ? lines : lines.map(&:reverse).reverse
-      n_lines2 = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+      n_lines = clockwise? ? p1_lines : p1_lines.map(&:reverse).reverse
+      n_lines2 = poly.clockwise? ? p2_lines : p2_lines.map(&:reverse).reverse
     else
-      n_lines2 = clockwise? ? lines : lines.map(&:reverse).reverse
-      n_lines = poly.clockwise? ? poly.lines : poly.lines.map(&:reverse).reverse
+      n_lines2 = clockwise? ? p1_lines : p1_lines.map(&:reverse).reverse
+      n_lines = poly.clockwise? ? p2_lines : p2_lines.map(&:reverse).reverse
     end
     new_poly = ["#{n_lines.first.first.x} #{n_lines.first.first.y}"]
     finished_poly = geom_switch(n_lines, n_lines2, new_poly)
