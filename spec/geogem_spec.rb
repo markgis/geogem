@@ -168,4 +168,39 @@ RSpec.describe Polygon do
       .to eq(false)
     end
   end
+
+  describe 'repair' do
+    it 'fixes a geometry with a holey self intersection' do
+      expect(Polygon.new("0 0, 10 0, 4 6, 4 4, 10 10, 0 10, 0 0").repair)
+      .to eq ("0 0, 10 0, 5.0 5.0, 10 10, 0 10, 0 0")
+    end
+  end
+
+  describe 'repair' do
+    it 'fixes a geometry with an outgoing self intersection' do
+      expect(Polygon.new("0 0, 10 0, 16 6, 16 4, 10 10, 0 10, 0 0").repair)
+      .to eq("0 0, 10 0, 15.0 5.0, 10 10, 0 10, 0 0")
+    end
+  end
+
+  describe 'repair_2' do
+    it 'fixes a geometry with a holey intersection by going though each node' do
+      expect(Polygon.new("0 0, 10 0, 4 6, 4 4, 10 10, 0 10, 0 0").repair_2)
+      .to eq("0 0, 10 0, 5.0 5.0, 4 4, 4 6, 5.0 5.0, 10 10, 0 10, 0 0")
+    end
+  end
+
+  describe 'repair_2' do
+    it 'fixes a geometry with a outgoing self intersection by going though each node' do
+      expect(Polygon.new("0 0, 10 0, 16 6, 16 4, 10 10, 0 10, 0 0").repair_2)
+      .to eq("0 0, 10 0, 15.0 5.0, 16 4, 16 6, 15.0 5.0, 10 10, 0 10, 0 0")
+    end
+  end
+
+  describe 'repair' do
+    it 'removes double nodes from a polygon' do
+      expect(Polygon.new("0 0, 10 0, 10 0, 10 10, 0 10, 0 0").repair)
+      .to eq("0 0, 10 0, 10 10, 0 10, 0 0")
+    end
+  end
 end
