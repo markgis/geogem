@@ -7,7 +7,10 @@ class Polygon
 
   def initialize(wkt)
     @nodes = wkt.downcase.delete('polygon()')
-                .split(', ').map { |xy| Point.new(xy) }
+                .split(', ')
+                .chunk { |p| p }.map(&:first)
+                .map { |xy| Point.new(xy) }
+
     @lines = nodes.slice(0, nodes.length-1).zip(nodes.slice(1,nodes.length))
   end
 
@@ -58,10 +61,11 @@ class Polygon
     x3, y3 = line_2[0].x, line_2[0].y
     x4, y4 = line_2[1].x, line_2[1].y
     u_bottom =  ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
-    u_top = ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3))
-    u = -(u_top.to_f / u_bottom.to_f)
-    px = x3 + u * (x4 - x3)
-    py = y3 + u * (y4 - y3)
+    u_top = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4))
+    u = (u_top.to_f / u_bottom.to_f)
+    #u *= 0.999
+    px = x1 + u * (x2 - x1)
+    py = y1 + u * (y2 - y1)
     "#{px} #{py}"
   end
 
@@ -103,7 +107,14 @@ class Polygon
     finished_poly.join(', ')
   end
 
-  protected 
+  def cleaner
+    #binding.pry
+    new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
+    finished_poly = geom_switch(lines, lines.map(&:reverse).reverse, new_poly)
+    finished_poly.join(', ')
+  end
+
+  protected
 
   def point_in_poly?(test_point)
     #binding.pry
@@ -139,7 +150,11 @@ class Polygon
       end
       new_poly << "#{l1.last.x} #{l1.last.y}"
     end
+<<<<<<< HEAD
   new_poly
+=======
+    new_poly
+>>>>>>> 6c8831ed858a328312d92ca65e3c617badfb59c4
   end
 
   def intersect?(line_1, line_2)
@@ -162,7 +177,7 @@ class Polygon
   def bbox_intersect?(bbox1, bbox2)
     bb1_min, bb1_max = bbox1.split(', ').map { |p| Point.new(p) }
     bb2_min, bb2_max = bbox2.split(', ').map { |p| Point.new(p) }
-    (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) && 
+    (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) &&
       (bb1_max.y >= bb2_min.y && bb2_max.y >= bb2_max.y)
   end
 end
@@ -198,4 +213,4 @@ class Point
 end
 
 
-#Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5"))
+#puts Polygon.new("551000 235000, 551000 233000, 552500 234000, 551500 234000, 553000 233000, 553000 235000, 551000 235000").cleaner
