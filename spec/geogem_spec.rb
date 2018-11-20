@@ -15,15 +15,15 @@ RSpec.describe Point do
     end
   end
 
-  describe ' #to_wkt' do 
-    it 'returns the point in Well Known Text format' do 
+  describe ' #to_wkt' do
+    it 'returns the point in Well Known Text format' do
       expect(Point.new("200000 300000").to_wkt)
       .to eq("POINT(200000 300000)")
     end
   end
 end
 
-RSpec.describe Polygon do 
+RSpec.describe Polygon do
   describe ' #centre_point' do
     it 'returns centre point of a polygon' do
       expect(Polygon.new("520575 170388, 520617 170405, 520624 170389, 520582 170371, 520575 170388").centre_point)
@@ -62,7 +62,7 @@ RSpec.describe Polygon do
   end
 
   describe ' #self_intersects?' do
-    it 'returns true if a polygon intersects with it\'s self' do 
+    it 'returns true if a polygon intersects with it\'s self' do
       expect(Polygon.new("0 0, 2 2, 0 2, 2 0, 0 0").self_intersects?)
       .to eq(true)
     end
@@ -83,20 +83,20 @@ RSpec.describe Polygon do
   end
 
   describe '#intersects?' do
-    it 'returns true if 2 polygons intersect' do 
+    it 'returns true if 2 polygons intersect' do
       expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").intersects?(Polygon.new("5 5, 20 0, 20 30, 0 20, 5 5")))
       .to eq(true)
     end
   end
 
-  describe 'intersects?' do 
+  describe 'intersects?' do
     it 'returns false when 2 polygon do not intersect' do
       expect(Polygon.new("0 0, 0 10, 5 5, 10 10, 10 0, 0 0").intersects?(Polygon.new("0 11, 5 6, 10 11, 10 20, 0 20, 0 11")))
       .to eq(false)
     end
   end
 
-  describe '#point_in_poly?' do 
+  describe '#point_in_poly?' do
     it 'returns true if a point lies inside a polygon' do
       expect(Polygon.new("0 0, 100 0, 100 100, 0 100, 0 0").send(:point_in_poly?, Point.new("50 50")))
       .to eq(true)
@@ -134,7 +134,7 @@ RSpec.describe Polygon do
     end
   end
 
-  describe 'dissolve' do 
+  describe 'dissolve' do
     it 'returns false if two polygons don\'t intersect' do
       expect(Polygon.new("0 0, 0 1, 1 1, 1 0, 0 0").dissolve(Polygon.new("5 5, 10 5, 10 10, 5 10, 5 5")))
       .to eq (false)
@@ -166,6 +166,13 @@ RSpec.describe Polygon do
     it 'returns false if a polygon\'s nodes are in a counter clockwise formation' do
       expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").send(:clockwise?))
       .to eq(false)
+    end
+  end
+
+  describe 'polygon' do
+    it 'removes double nodes' do
+      expect(Polygon.new("0 0, 10 0, 10 0, 10 10, 0 10, 0 0").to_wkt)
+      .to eq("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))")
     end
   end
 end
