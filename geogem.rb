@@ -150,11 +150,7 @@ class Polygon
       end
       new_poly << "#{l1.last.x} #{l1.last.y}"
     end
-<<<<<<< HEAD
-  new_poly
-=======
     new_poly
->>>>>>> 6c8831ed858a328312d92ca65e3c617badfb59c4
   end
 
   def intersect?(line_1, line_2)

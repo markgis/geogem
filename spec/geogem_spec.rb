@@ -169,7 +169,6 @@ RSpec.describe Polygon do
     end
   end
 
-<<<<<<< HEAD
   describe 'repair' do
     it 'fixes a geometry with a holey self intersection' do
       expect(Polygon.new("0 0, 10 0, 4 6, 4 4, 10 10, 0 10, 0 0").repair)
