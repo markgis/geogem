@@ -94,19 +94,6 @@ class Polygon
     finished_poly.join(', ')
   end
 
-  def repair_2
-    new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
-    reverse_lines = lines.map(&:reverse).reverse
-    finished_poly = geom_switch(lines, reverse_lines, new_poly)
-    finished_poly.join(', ')
-  end
-
-  def repair
-    new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
-    finished_poly = geom_switch(lines, lines, new_poly)
-    finished_poly.join(', ')
-  end
-
   def cleaner
     #binding.pry
     new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
