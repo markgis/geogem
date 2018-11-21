@@ -1,7 +1,7 @@
-require_relative '../geogem.rb'
-require_relative '../generalization/radial_thin.rb'
-require_relative '../generalization/perpend_distance.rb'
-require_relative '../validation/geom_check.rb'
-require_relative '../generalization/douglas-peucker.rb'
+require_relative '../lib/geogem.rb'
+require_relative '../lib/generalization/radial_thin.rb'
+require_relative '../lib/generalization/perpend_distance.rb'
+require_relative '../lib/validation/geom_check.rb'
+require_relative '../lib/generalization/douglas-peucker.rb'
 
 require 'yaml'
