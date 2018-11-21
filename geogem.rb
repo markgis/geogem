@@ -25,10 +25,8 @@ class Polygon
   end
 
   def centre_point
-    x_max = nodes.max_by(&:x).x
-    y_max = nodes.max_by(&:y).y
-    x_min = nodes.min_by(&:x).x
-    y_min = nodes.min_by(&:y).y
+    x_min, x_max = nodes.minmax_by(&:x).map(&:x)
+    y_min, y_max = nodes.minmax_by(&:y).map(&:y)
     x_coord = (x_max + x_min) / 2.0
     y_coord = (y_max + y_min) / 2.0
     "#{x_coord} #{y_coord}"
