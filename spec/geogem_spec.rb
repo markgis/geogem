@@ -175,5 +175,19 @@ RSpec.describe Polygon do
       .to eq("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))")
     end
   end
+
+  describe 'cleaner' do 
+    it 'returns a polygon without a self_intersection while maintaining the same shape' do
+      expect(Polygon.new("0 0, 20 20, 0 20, 20 0, 0 0").cleaner)
+      .to eq("0 0, 9.99 9.99, 0 20, 20 20, 10.01 10.01, 20 0, 0 0")
+    end
+  end
+
+  describe 'cleaner' do
+    it 'returns the same polygon as put in if there is no self intersection' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").cleaner)
+      .to eq("0 0, 10 0, 10 10, 0 10, 0 0")
+    end
+  end
 end
 

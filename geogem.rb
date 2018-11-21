@@ -50,7 +50,7 @@ class Polygon
     nodes.any? { |n| poly.point_in_poly?(n) }
   end
 
-  def intersection(line_1, line_2)
+  def intersection(line_1, line_2, cleaning = false)
     return false unless intersect?(line_1,line_2)
     x1, y1 = line_1[0].x, line_1[0].y
     x2, y2 = line_1[1].x, line_1[1].y
@@ -59,7 +59,7 @@ class Polygon
     u_bottom =  ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
     u_top = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4))
     u = (u_top.to_f / u_bottom.to_f)
-    #u *= 0.999
+    u *= 0.999 if cleaning
     px = x1 + u * (x2 - x1)
     py = y1 + u * (y2 - y1)
     "#{px} #{py}"
@@ -91,9 +91,9 @@ class Polygon
   end
 
   def cleaner
-    #binding.pry
     new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
-    finished_poly = geom_switch(lines, lines.map(&:reverse).reverse, new_poly)
+    lines_reverse = lines.map(&:reverse).reverse
+    finished_poly = geom_switch(lines, lines_reverse, new_poly, true)
     finished_poly.join(', ')
   end
 
@@ -115,20 +115,14 @@ class Polygon
 
   private
 
-  def selfintersection_remover
-    new_poly = ["#{lines.first.first.x} #{lines.first.first.y}"]
-    finished_poly = geom_switch(lines, lines, new_poly)
-    finished_poly.join(', ')
-  end
-
-  def geom_switch(lines1, lines2, new_poly)
+  def geom_switch(lines1, lines2, new_poly, cleaning = false)
     lines1.each_with_index do |l1, in1|
       lines2.each_with_index do |l2, in2|
         if intersect?(l1,l2)
-          new_poly << intersection(l1,l2)
+          new_poly << intersection(l1,l2, cleaning)
           rest_lines2 = lines2.slice(in2, lines2.length)
           rest_lines1 = lines1.slice(in1+1, lines1.length)
-          return geom_switch(rest_lines2, rest_lines1, new_poly)
+          return geom_switch(rest_lines2, rest_lines1, new_poly, cleaning)
         end
       end
       new_poly << "#{l1.last.x} #{l1.last.y}"
