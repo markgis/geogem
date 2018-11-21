@@ -38,12 +38,12 @@ RSpec.describe Polygon do
     end
   end
 
-  describe ' #area' do
-    it 'returns the area of a polyon' do
-      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").area)
-      .to eq(100)
-    end
-  end
+  # describe ' #area' do
+  #   it 'returns the area of a polyon' do
+  #     expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").area)
+  #     .to eq(100)
+  #   end
+  # end
 
   describe ' #intersect?' do
     it 'returns true if 2 line segments intersect' do
