@@ -1,12 +1,12 @@
 # geogem
-## Basic spatial functions - bit of a learning for myself
+## Spatial functions built in pure Ruby
 
 
-Simple start to a spatial library in Ruby to practice my coding and learn some maths.
+Simple start to a spatial library in Ruby.
 
-Wanted to make some simple spatial functions to calculate the distance between two points, find the area of a polygon etc. Just uses ruby and maths so far but might have to add in other libraries - proj4 most likely if I want to add in the ability to use multiple projection systems.  
+Simple spatial functions to calculate the distance between two points, find the area of a polygon etc. Just uses ruby and maths so far but might have to add in other libraries - proj4 most likely if I want to add in the ability to use multiple projection systems.  
 
-Only works in British national grid. 
+Only works in British national grid, curently.
 
 So far no conversion from or to geometries, the fucntions take in coordinates as strings using the WKT format - you can either add the brackets or without i.e. "x y,x y,x y" 
 
@@ -25,9 +25,14 @@ Rspecs are in place to ensure the functions work for basic cases. More detailed 
 
 
 To do:
-1. refactor- pretty dirty
-2. BUffer function (buffer class that buffers any geom type)
-3. Validation - syntax errors of WKT, self intersections, hanging lines etc
-4. clipping functions
-5. Fix generalization algorithms (radil and perpendicular distance) both work but some strange behaviour - pretty much done?
+- [ ] refactor- pretty dirty
+- [ ] BUffer function/class (buffer class that buffers any geom type)
+- [ ] Validation - syntax errors of WKT, self intersections, hanging lines etc
+- [ ] clipping functions
+- [ ] Fix generalization algorithms (radil and perpendicular distance) both work but some strange behaviour - pretty much done?
+- [ ] WKTto geom class - wrap/unwrap wkt strings
+- [ ] Geom binary (faster processing of large polygons?
+- [ ] projections? - conversions etc (too complicated?)
+- [ ] geometry tools - line to polygons, polygons to line etc
+- [ ] analysis - nearest neighbour, spatial stats etc
 
