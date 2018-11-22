@@ -68,6 +68,7 @@ class Polygon
   def dissolve(poly)
     #binding.pry
     return false unless intersects?(poly)
+=begin
     p1_x_min = nodes.min_by(&:x).x
     p1_y_min = nodes.min_by(&:y).y
     p2_x_min = poly.nodes.min_by(&:x).x
@@ -85,6 +86,27 @@ class Polygon
       n_lines2 = clockwise? ? p1_lines : p1_lines.map(&:reverse).reverse
       n_lines = poly.clockwise? ? p2_lines : p2_lines.map(&:reverse).reverse
     end
+=end
+    p1_out_index = nodes.index { |n| !poly.point_in_poly?(n) }
+    p2_in_index = poly.nodes.index { |n| point_in_poly?(n) }
+    p1_lines = lines.slice(p1_out_index, lines.length) + lines.slice(0, p1_out_index)
+    p2_lines = poly.lines.slice(p2_in_index, poly.lines.length) + poly.lines.slice(0, p2_in_index)
+    n_lines = clockwise? ? p1_lines : p1_lines.map(&:reverse).reverse
+    n_lines2 = poly.clockwise? ? p2_lines : p2_lines.map(&:reverse).reverse
+    new_poly = ["#{n_lines.first.first.x} #{n_lines.first.first.y}"]
+    finished_poly = geom_switch(n_lines, n_lines2, new_poly)
+    finished_poly.join(', ')
+  end
+
+  def clip(poly)
+    #binding.pry
+    return to_wkt unless intersects?(poly)
+    p1_out_index = nodes.index { |n| !poly.point_in_poly?(n) }
+    p2_out_index = poly.nodes.index { |n| !point_in_poly?(n) }
+    p1_lines = lines.slice(p1_out_index, lines.length) + lines.slice(0, p1_out_index)
+    p2_lines = poly.lines.slice(p2_out_index, poly.lines.length) + poly.lines.slice(0, p2_out_index)
+    n_lines = clockwise? ? p1_lines : p1_lines.map(&:reverse).reverse
+    n_lines2 = poly.clockwise? ? p2_lines.map(&:reverse).reverse: p2_lines
     new_poly = ["#{n_lines.first.first.x} #{n_lines.first.first.y}"]
     finished_poly = geom_switch(n_lines, n_lines2, new_poly)
     finished_poly.join(', ')

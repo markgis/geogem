@@ -22,6 +22,8 @@ Rspecs are in place to ensure the functions work for basic cases. More detailed 
 6. to_wkt - returns the class object nodes as a wkt
 7. Area - will return the area of the polygon
 8. intersects? - returns true if the 2 polygons intersect with each other or 1 polygon sites on top of the other
+9. Dissolve - Takes 2 intersecting polygons and returns a single larger polygon
+10. cleaner - Removes self-intersections from a polygon
 
 
 To do:

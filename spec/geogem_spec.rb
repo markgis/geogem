@@ -144,7 +144,7 @@ RSpec.describe Polygon do
   describe 'dissolve' do
     it 'returns the combination of 2 polygons when the start point is inside another polygon' do
       expect(Polygon.new("5 5, 20 5, 20 20, 5 20, 5 5").dissolve(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0")))
-      .to eq("0 0, 0 10, 5.0 10.0, 5 20, 20 20, 20 5, 10.0 5.0, 10 0, 0 0")
+      .to eq("20 5, 10.0 5.0, 10 0, 0 0, 0 10, 5.0 10.0, 5 20, 20 20, 20 5")
     end
   end
 
@@ -187,6 +187,27 @@ RSpec.describe Polygon do
     it 'returns the same polygon as put in if there is no self intersection' do
       expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").cleaner)
       .to eq("0 0, 10 0, 10 10, 0 10, 0 0")
+    end
+  end
+
+  describe 'cleaner' do
+    it 'removes self-intersections without moving nodes too far apart' do
+      expect(Polygon.new("500000 100000, 500100 100100, 500100 100000, 500000 100100, 500000 100000").cleaner)
+      .to eq("500000 100000, 500049.95 100049.95, 500100 100000, 500100 100100, 500050.05 100050.05, 500000 100100, 500000 100000")
+    end
+  end
+
+  describe 'clip' do
+    it 'returns the nodes of a polygon with the nodes of another polygon removed' do
+      expect(Polygon.new("0 0, 10 0, 10 10, 0 10, 0 0").clip(Polygon.new("5 5, 15 5, 15 15, 5 15, 5 5")))
+      .to eq("0 0, 0 10, 5.0 10.0, 5 5, 10.0 5.0, 10 0, 0 0")
+    end
+  end
+
+  describe 'clip' do
+    it 'returns the original polygon if the 2 polygons don\'t intersect' do
+      expect(Polygon.new("0 0, 1 0, 1 1, 0 1, 0 0").clip(Polygon.new("10 10, 15 10, 15, 15, 10 15, 10 10")))
+      .to eq("POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))")
     end
   end
 end

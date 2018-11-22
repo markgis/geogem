@@ -50,7 +50,7 @@ RSpec.describe PerpendDistance do
   describe 'perpend_thin' do
     it 'returns third node from a line' do
       actual = PerpendDistance.new.perpend_thin(site, 0.03)
-      puts actual
+      #puts actual
       expect(actual).to eq(['378211.59999999962747097','390006.40000000037252903'])
     end
   end
