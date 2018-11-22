@@ -26,8 +26,8 @@ Rspecs are in place to ensure the functions work for basic cases. More detailed 
 
 To do:
 1. refactor- pretty dirty
-2. BUffer lines
-3. buffer polygons
-4. clipping of polygons
-5. Fix generalization algorithms (radil and perpendicular distance) both work but some strange behaviour 
-6. Validation - syntax errors of WKT, UK bounds check, etc
+2. BUffer function (buffer class that buffers any geom type)
+3. Validation - syntax errors of WKT, self intersections, hanging lines etc
+4. clipping functions
+5. Fix generalization algorithms (radil and perpendicular distance) both work but some strange behaviour - pretty much done?
+
