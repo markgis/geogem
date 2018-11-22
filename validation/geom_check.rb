@@ -5,8 +5,8 @@ require "cmath"
 class GeomCheck
 
   def radians(point1, point2)
-    dy = Float(point2[1] - point1[1])
-    dx = Float(point2[0] - point1[0])
+    dy = Float(point2.x - point1.x)
+    dx = Float(point2.y - point1.y)
     atan(dy/dx)
   end
 
