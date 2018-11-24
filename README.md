@@ -33,6 +33,7 @@ Rspecs are in place to ensure the functions work for basic cases. More detailed 
 
 
 To do:
+- [ ] set up rbenv, gem files, installation, bundler
 - [ ] refactor- pretty dirty
 - [ ] BUffer function/class (buffer class that buffers any geom type)
 - [ ] Validation - syntax errors of WKT, self intersections, hanging lines etc
