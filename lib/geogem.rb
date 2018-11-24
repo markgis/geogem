@@ -44,7 +44,6 @@ class Polygon
   end
 
   def intersects?(poly)
-    #binding.pry
     return false unless bbox_intersect?(self.bbox, poly.bbox)
     return true unless !poly.nodes.any? { |n| point_in_poly?(n) }
     nodes.any? { |n| poly.point_in_poly?(n) }
@@ -66,7 +65,6 @@ class Polygon
   end
 
   def dissolve(poly)
-    #binding.pry
     return false unless intersects?(poly)
 =begin
     p1_x_min = nodes.min_by(&:x).x
@@ -99,7 +97,6 @@ class Polygon
   end
 
   def clip(poly)
-    #binding.pry
     return to_wkt unless intersects?(poly)
     p1_out_index = nodes.index { |n| !poly.point_in_poly?(n) }
     p2_out_index = poly.nodes.index { |n| !point_in_poly?(n) }
@@ -122,7 +119,6 @@ class Polygon
   protected
 
   def point_in_poly?(test_point)
-    #binding.pry
     test_line = [test_point, Point.new("700000 #{test_point.y}")]
     intersections = lines.map { |l| intersect?(l, test_line) }
     intersection_cnt = intersections.count(true)
@@ -153,7 +149,6 @@ class Polygon
   end
 
   def intersect?(line_1, line_2)
-    #binding.pry
     x1, y1 = line_1[0].x, line_1[0].y
     x2, y2 = line_1[1].x, line_1[1].y
     x3, y3 = line_2[0].x, line_2[0].y

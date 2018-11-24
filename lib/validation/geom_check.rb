@@ -3,6 +3,8 @@ require 'cmath'
 
 class GeomCheck
 
+  # this needs to be moved from here into geogem, this class is for validation
+
   def radians(point1, point2)
     dy = Float(point2.y - point1.y)
     dx = Float(point2.x - point1.x)
