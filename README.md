@@ -1,7 +1,7 @@
 # geogem
 ## Spatial functions built in pure Ruby
 
-### Dependencies 
+### Dependencies list
 
 'pry-byebug'
 
