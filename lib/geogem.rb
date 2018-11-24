@@ -1,5 +1,5 @@
 include Math
-require 'pry-byebug'
+# require 'pry-byebug'
 
 class Polygon
   attr_reader :nodes
@@ -35,13 +35,13 @@ class Polygon
 
   def area
     multiplied = lines.map { |p1, p2| (p1.x * p2.y) - (p2.x * p1.y) }
-    total = multiplied.sum.abs
+    total = multiplied.reduce(0,:+).abs
     total / 2.0
   end
 
   def self_intersects?
     line_pairs = lines.combination(2)
-    line_pairs.map { |l1, l2| intersect?(l1, l2) }.any? 
+    line_pairs.map { |l1, l2| intersect?(l1, l2) }.any?
   end
 
   def intersects?(poly)
@@ -72,7 +72,7 @@ class Polygon
   def bbox_intersect?(bbox1, bbox2)
     bb1_min, bb1_max = bbox1.split(' ').map { |p| Point.new(p) }
     bb2_min, bb2_max = bbox2.split(' ').map { |p| Point.new(p) }
-    (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) && 
+    (bb1_max.x >= bb2_min.x && bb2_max.x >= bb2_max.x) &&
       (bb1_max.y >= bb2_min.y && bb2_max.y >= bb2_max.y)
   end
 
