@@ -1,8 +1,16 @@
 # geogem
 ## Spatial functions built in pure Ruby
 
+### Dependencies list
 
-Simple start to a spatial library in Ruby.
+'pry-byebug'
+
+### Installation
+
+Suggested use - Use rbenv to set up ruby environment to 2.0.0 or later
+
+
+## Simple start to a spatial library in Ruby.
 
 Simple spatial functions to calculate the distance between two points, find the area of a polygon etc. Just uses ruby and maths so far but might have to add in other libraries - proj4 most likely if I want to add in the ability to use multiple projection systems.  
 
