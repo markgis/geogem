@@ -45,7 +45,15 @@ RSpec.describe PerpendDistance do
 
   describe 'n_node' do
     it 'returns third node from a line' do
-      expect(PerpendDistance.new.n_node(site, 2)).to eq(['378211.59999999962747097', '390006.40000000037252903'])
+      expect(PerpendDistance.new.n_node(site, 2)).to eq(['378211.59999999962747097','390006.40000000037252903'])
+    end
+  end
+
+  describe 'perpend_thin' do
+    it 'returns third node from a line' do
+      actual = PerpendDistance.new.perpend_thin(site, 0.03)
+      #puts actual
+      expect(actual).to eq(['378211.59999999962747097','390006.40000000037252903'])
     end
   end
 end
